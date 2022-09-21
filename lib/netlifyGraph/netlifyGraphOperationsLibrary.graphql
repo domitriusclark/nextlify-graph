@@ -1,0 +1,14 @@
+query LastTenRepos($last: Int = 10) @netlify(id: """41a49653-8913-48fb-81c9-e838959f74b3""", doc: """Fetch the last ten repos from a User on Github""") {
+  gitHub {
+    viewer {
+      repositories(last: $last) {
+        totalCount
+        nodes {
+          openGraphImageUrl
+          name
+          nameWithOwner
+        }
+      }
+    }
+  }
+}
