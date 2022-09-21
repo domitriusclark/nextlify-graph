@@ -1,6 +1,6 @@
 import Head from "next/head";
 import React, { useState } from "react";
-import { Auth } from 'netlify-graph-auth';
+import { Auth } from "netlify-graph-auth";
 import NetlifyGraphAuth = Auth.NetlifyGraphAuth;
 
 export default function Form(props) {
@@ -20,9 +20,9 @@ export default function Form(props) {
       body: JSON.stringify(formVariables),
       headers: {
         "Content-Type": "application/json",
-        ...auth?.authHeaders()
+        ...auth?.authHeaders(),
       },
-      method: "POST"
+      method: "POST",
     });
 
     const formResult = await res.json();
@@ -38,45 +38,70 @@ export default function Form(props) {
       </Head>
       <main>
         <h1>{props.title}</h1>
-        <form onSubmit={event => { event.preventDefault(); submitForm() }}>
-            <label htmlFor="last">last</label><input id="last" type="number" onChange={updateFormVariables(setFormVariables, ["last"], (value) => {try {return parseInt(value, 10)} catch (e) { return 0 }})} />
-            <input type="submit" />
-          </form>
-        {needsLoginService ? (
-          <button
-          onClick={async () => {
-            await auth.login(needsLoginService);
-            const loginSuccess = await auth.isLoggedIn(needsLoginService);
-            if (loginSuccess) {
-              console.log("Successfully logged into " + needsLoginService);
-              submitForm();
-            } else {
-              console.log("The user did not grant auth to " + needsLoginService);
-            }
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            submitForm();
           }}
         >
-          {`Log in to ${needsLoginService.graphQLField}`}
-        </button>) 
-        : null}
+          <label htmlFor="last">last</label>
+          <input
+            id="last"
+            type="number"
+            defaultValue={10}
+            onChange={updateFormVariables(
+              setFormVariables,
+              ["last"],
+              (value) => {
+                try {
+                  return parseInt(value, 10);
+                } catch (e) {
+                  return 0;
+                }
+              }
+            )}
+          />
+          <input type="submit" />
+        </form>
+        {needsLoginService ? (
+          <button
+            onClick={async () => {
+              await auth.login(needsLoginService);
+              const loginSuccess = await auth.isLoggedIn(needsLoginService);
+              if (loginSuccess) {
+                console.log("Successfully logged into " + needsLoginService);
+                submitForm();
+              } else {
+                console.log(
+                  "The user did not grant auth to " + needsLoginService
+                );
+              }
+            }}
+          >
+            {`Log in to ${needsLoginService.graphQLField}`}
+          </button>
+        ) : null}
         <pre>{JSON.stringify(formVariables, null, 2)}</pre>
         <pre>{JSON.stringify(result, null, 2)}</pre>
       </main>
     </div>
-  )
+  );
 }
 
 export async function getServerSideProps(context) {
   const siteId = process.env.SITE_ID;
   if (!siteId) {
-    throw new Error("SITE_ID environment variable is not set. Be sure to run `netlify link` before `netlify dev`");
+    throw new Error(
+      "SITE_ID environment variable is not set. Be sure to run `netlify link` before `netlify dev`"
+    );
   }
 
   return {
     props: {
       title: "LastTenRepos form",
-      siteId: siteId
-    }
-  }
+      siteId: siteId,
+    },
+  };
 }
 
 const updateFormVariables = (setFormVariables, path, coerce) => {
@@ -89,7 +114,7 @@ const updateFormVariables = (setFormVariables, path, coerce) => {
       }
     } else {
       if ([undefined, null].indexOf(object[path[0]]) > -1) {
-        object[path[0]] = typeof path[1] === "number" ?  [] : {};
+        object[path[0]] = typeof path[1] === "number" ? [] : {};
       }
       setIn(object[path[0]], path.slice(1), value);
     }
