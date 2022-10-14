@@ -16,7 +16,7 @@ export default function Form(props) {
   );
 
   const submitForm = async () => {
-    const res = await fetch("/api/LastTenRepos", {
+    const res = await fetch("/api/fetchRecentRepos", {
       body: JSON.stringify(formVariables),
       headers: {
         "Content-Type": "application/json",

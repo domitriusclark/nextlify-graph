@@ -14,7 +14,7 @@ export default async function handler(
   //// If you want to use the API with your own access token:
   // accessToken = process.env.NETLIFY_GRAPH_TOKEN;
 
-  const { errors, data } = await NetlifyGraph.fetchLastTenRepos(
+  const { errors, data } = await NetlifyGraph.fetchLatestRepos(
     { last: req.body.last },
     { accessToken: accessToken }
   );
@@ -22,8 +22,6 @@ export default async function handler(
   if (errors) {
     console.error(JSON.stringify(errors, null, 2));
   }
-
-  console.log(JSON.stringify(data, null, 2));
 
   res.setHeader("Content-Type", "application/json");
 

@@ -1,4 +1,4 @@
-query LastTenRepos($last: Int = 10) @netlify(id: """41a49653-8913-48fb-81c9-e838959f74b3""", doc: """Fetch the last ten repos from a User on Github""") {
+query LatestRepos($last: Int = 10) @netlify(id: """41a49653-8913-48fb-81c9-e838959f74b3""", doc: """Fetch a set amount of repos from the currently logged in user""") {
   gitHub {
     viewer {
       repositories(last: $last) {
