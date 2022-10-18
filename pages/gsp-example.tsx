@@ -1,5 +1,5 @@
-import { graph } from "../lib/graph";
-import { fetchReposQuery } from "../lib/queries";
+import { graph } from "@lib/graph";
+import { fetchReposQuery } from "@lib/queries";
 
 import type { NextPage } from "next";
 

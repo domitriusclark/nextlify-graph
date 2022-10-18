@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { graph } from "../../lib/graph";
-import { fetchReposQuery } from "../../lib/queries";
+import { graph } from "@lib/graph";
+import { fetchReposQuery } from "@lib/queries";
 
 export default async function handler(
   req: NextApiRequest,

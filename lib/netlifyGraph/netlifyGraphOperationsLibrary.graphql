@@ -1,0 +1,3 @@
+query ExampleQuery @netlify(id: null, doc: null) {
+  __typename
+}

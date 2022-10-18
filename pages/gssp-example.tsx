@@ -1,7 +1,7 @@
 import React from "react";
 import type { NextPage } from "next";
-import { graph } from "../lib/graph";
-import { fetchReposQuery } from "../lib/queries";
+import { graph } from "@lib/graph";
+import { fetchReposQuery } from "@lib/queries";
 
 const Home: NextPage = ({ repos }) => {
   return (

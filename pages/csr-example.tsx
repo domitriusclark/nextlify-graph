@@ -15,7 +15,7 @@ const CsrExample: NextPage = () => {
   return (
     <div className="flex flex-col w-full h-full items-center pt-6">
       <h1 className="text-2xl text-cyan-600">
-        Let's start working with some Github
+        Lets start working with some Github
       </h1>
 
       <div className="flex flex-col gap-4 w-1/2 justify-center mt-6">
