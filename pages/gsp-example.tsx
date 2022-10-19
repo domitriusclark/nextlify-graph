@@ -28,11 +28,21 @@ const Home: NextPage<{ repos: any }> = ({ repos }) => {
 export async function getStaticProps() {
   const netlify = require("@netlify/functions");
   const { token, error } = netlify.getNetlifyGraphTokenForBuild();
+
+  if (error) {
+    return {
+      props: {
+        repos: [],
+        error: error.message,
+      },
+    };
+  }
+
   const data = await graph(fetchReposQuery, null, token);
 
   return {
     props: {
-      repos: data.data.gitHub?.repositoryOwner?.repositories.nodes || [],
+      repos: data.data.gitHub.repositoryOwner.repositories.nodes,
     },
   };
 }

@@ -1,3 +1,33 @@
 query ExampleQuery @netlify(id: null, doc: null) {
   __typename
 }
+
+subscription IssuesSubscription($name: String, $owner: String) @netlify(id: """53a0900d-90e7-44ae-85ee-eb27ec375534""", doc: """Subscribe to the issues of a repo and pull the latest 10 issues""") {
+  poll(schedule: {every: {minutes: 1}}, onlyTriggerWhenPayloadChanged: true) {
+    query {
+      gitHub {
+        repository(name: $name, owner: $owner) {
+          url
+          issues(last: 10, states: OPEN) {
+            totalCount
+            nodes {
+              body
+              author {
+                ... on GitHubUser {
+                  id
+                  url
+                  name
+                }
+              }
+              id
+              url
+              title
+              state
+              createdAt
+            }
+          }
+        }
+      }
+    }
+  }
+}
