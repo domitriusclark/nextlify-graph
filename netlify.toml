@@ -23,5 +23,6 @@
 
 [graph]
   codeGenerator = "netlify-builtin:nextjs"
+  moduleType = "esm"
 
 

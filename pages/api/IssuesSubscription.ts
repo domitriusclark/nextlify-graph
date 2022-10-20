@@ -1,14 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import NetlifyGraph from "../../lib/netlifyGraph";
+const NetlifyGraph = require("../../lib/netlifyGraph");
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log("Received request");
+exports.handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const reqBody = await extractBody(req);
+
   const payload = NetlifyGraph.parseAndVerifyIssuesSubscriptionEvent({
     headers: {
       "x-netlify-graph-signature": req.headers[
         "x-netlify-graph-signature"
-      ] as string,
+      ] as string
     },
     body: reqBody,
   });
@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!payload) {
     return res.status(422).json({
       success: false,
-      error: "Unable to verify payload signature",
+      error: 'Unable to verify payload signature',
     });
   }
 
@@ -34,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
    * If you want to unsubscribe from this webhook
    * in order to stop receiving new events,
    * simply return status 410, e.g.:
-   *
+   * 
    * return res.status(410).json({});
    */
 
@@ -43,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 };
 
-export default handler;
+exports.default = exports.handler;
 
 export const config = {
   api: {

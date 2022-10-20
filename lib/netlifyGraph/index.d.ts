@@ -27,7 +27,32 @@
     
     
     
+    
+    export type ExampleQuery = {
+  /**
+  * Any data from the function will be returned here
+  */
+data: {
+  __typename: unknown;
+};
+  /**
+  * Any errors from the function will be returned here
+  */
+errors?: Array<GraphQLError>;
+};
+    
     /**
+     * 
+     */
+    export function fetchExampleQuery(
+      /**
+      * Pass `{}` as no variables are defined for this function.
+      */
+      variables: Record<string, never>,
+      options?: NetlifyGraphFunctionOptions
+    ): Promise<ExampleQuery>;
+
+/**
   * Subscribe to the issues of a repo and pull the latest 10 issues
   */
   export function subscribeToIssuesSubscription(
@@ -153,31 +178,6 @@ errors?: Array<GraphQLError>;
   export function parseAndVerifyIssuesSubscriptionEvent (/** A Netlify Handler Event */ event : WebhookEvent) : null | IssuesSubscriptionEvent
   
 
-
-    export type ExampleQuery = {
-  /**
-  * Any data from the function will be returned here
-  */
-data: {
-  __typename: unknown;
-};
-  /**
-  * Any errors from the function will be returned here
-  */
-errors?: Array<GraphQLError>;
-};
-    
-    /**
-     * 
-     */
-    export function fetchExampleQuery(
-      /**
-      * Pass `{}` as no variables are defined for this function.
-      */
-      variables: Record<string, never>,
-      options?: NetlifyGraphFunctionOptions
-    ): Promise<ExampleQuery>;
-
 export type RepoIssuesQueryInput = {
   /**
  * The name of the repository
@@ -266,6 +266,10 @@ errors?: Array<GraphQLError>;
     
     export interface Functions {
       /**
+    * 
+    */
+    fetchExampleQuery: typeof fetchExampleQuery,
+  /**
     * Subscribe to the issues of a repo and pull the latest 10 issues
     */
     subscribeToIssuesSubscription:subscribeToIssuesSubscription,
@@ -273,10 +277,6 @@ errors?: Array<GraphQLError>;
      * Verify the event body is signed securely, and then parse the result.
      */
     parseAndVerifyIssuesSubscriptionEvent: typeof parseAndVerifyIssuesSubscriptionEvent,
-  /**
-    * 
-    */
-    fetchExampleQuery: typeof fetchExampleQuery,
   /**
     * An empty query to start from
     */

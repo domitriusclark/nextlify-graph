@@ -1,16 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-const NetlifyGraph = require("../../lib/netlifyGraph");
+import NetlifyGraph from "../../lib/netlifyGraph";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  // By default, all API calls use no authentication
   let accessToken = null;
-  accessToken = process.env.NETLIFY_GRAPH_TOKEN;
 
-  const { name, owner } = JSON.parse(req.body) || {};
+  //// If you want to use the client's accessToken when making API calls on the user's behalf:
+  // accessToken = req.headers["authorization"]?.split(" ")[1];
 
-  const { errors, data } = await NetlifyGraph.fetchRepoIssuesQuery(
-    { name, owner },
-    { accessToken: accessToken }
-  );
+  //// If you want to use the API with your own access token:
+  // accessToken = process.env.NETLIFY_GRAPH_TOKEN;
+      
+  const eventBodyJson = req.body || {};
+
+  const name = typeof req.query?.name === 'string' ? req.query?.name : req.query?.name[0];
+  const owner = typeof req.query?.owner === 'string' ? req.query?.owner : req.query?.owner[0];
+
+  const { errors, data } = await NetlifyGraph.fetchRepoIssuesQuery({ name: name, owner: owner }, {accessToken: accessToken}); 
 
   if (errors) {
     console.error(JSON.stringify(errors, null, 2));
@@ -21,14 +27,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.setHeader("Content-Type", "application/json");
 
   return res.status(200).json({
-    errors,
-    data,
+    errors, data
   });
 };
 
 export default handler;
 
-/**
+/** 
  * Client-side invocations:
  * Call your Netlify function from the browser with this helper:
  */
