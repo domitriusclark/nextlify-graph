@@ -1,13 +1,54 @@
-query LatestRepos($last: Int = 10) @netlify(id: """41a49653-8913-48fb-81c9-e838959f74b3""", doc: """Fetch a set amount of repos from the currently logged in user""") {
-  gitHub {
-    viewer {
-      repositories(last: $last) {
-        totalCount
-        nodes {
-          openGraphImageUrl
-          name
-          nameWithOwner
+query ExampleQuery @netlify(id: null, doc: null) {
+  __typename
+}
+
+subscription IssuesSubscription($name: String!, $owner: String!) @netlify(id: """53a0900d-90e7-44ae-85ee-eb27ec375534""", doc: """Subscribe to the issues of a repo and pull the latest 10 issues""") {
+  poll(schedule: {every: {minutes: 1}}, onlyTriggerWhenPayloadChanged: true) {
+    query {
+      gitHub {
+        repository(name: $name, owner: $owner) {
+          url
+          issues(last: 10, states: OPEN) {
+            totalCount
+            nodes {
+              body
+              author {
+                ... on GitHubUser {
+                  id
+                  url
+                  name
+                }
+              }
+              id
+              url
+              title
+              state
+              createdAt
+            }
+          }
         }
+      }
+    }
+  }
+}
+
+query RepoIssuesQuery($name: String = "", $owner: String = "") @netlify(id: """ba2ae0ac-6493-4057-bcfa-be767e9779dd""", doc: """An empty query to start from""") {
+  gitHub {
+    repository(name: $name, owner: $owner) {
+      issues(states: OPEN, last: 10) {
+        nodes {
+          url
+          title
+          state
+          id
+          createdAt
+          body
+          author {
+            login
+            url
+          }
+        }
+        totalCount
       }
     }
   }

@@ -23,3 +23,5 @@
 
 [graph]
   codeGenerator = "netlify-builtin:nextjs"
+
+
