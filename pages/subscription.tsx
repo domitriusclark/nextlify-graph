@@ -98,7 +98,9 @@ const SubscriptionPage: NextPage = ({ siteId }: any) => {
         >
           {`Log in to ${needsLoginService.graphQLField}`}
         </button>
-      ) : null}
+      ) : (
+        <p>Youre logged in 👍</p>
+      )}
 
       {result && (
         <div>
